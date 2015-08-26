@@ -62,8 +62,6 @@ void CommodityMarketSystem::postOrder(string dealer, vector<string> args) {
       Order order(++currentOrderNumber, dealer, commodity, side, amount, price);
       orders.push_back(order);
       printOutputMessage();
-      // Make new order, print output message
-      // cout << dealer << " " << side " " << commodity << " " << endl;
     }
 }
 
