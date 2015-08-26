@@ -21,3 +21,6 @@ Database.h
 Launcher.cpp
   - Creates CMS
   - Launches app
+
+TODO:
+- Create Printer class
