@@ -21,7 +21,9 @@ void Printer::printPostConfirmation(Order order) {
 }
 
 void Printer::printOrderInfo(Order order) {
-
+  cout << order.getID() << " " << order.getDealer() << " ";
+  cout << order.getSide() << " " << order.getCommodity() << " ";
+  cout << order.getAmount() << " " << order.getPrice() << endl;
 }
 
 void Printer::printTradeReport() {
@@ -30,6 +32,10 @@ void Printer::printTradeReport() {
 
 void Printer::printRevokedOrder(int orderID) {
   cout << orderID << " HAS BEEN REVOKED" << endl;
+}
+
+void Printer::printFilledStatus(int orderID) {
+  cout << orderID << " HAS BEEN FILLED" << endl;
 }
 
 void Printer::printError(string errorText) {

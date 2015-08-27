@@ -19,7 +19,7 @@ CommodityMarketSystem::~CommodityMarketSystem() {
 }
 
 void CommodityMarketSystem::processInput(string command) {
-  if (command.length() > 255) {
+  if (command.length() == 0 || command.length() > 255) {
     printer.printError("INVALID_MESSAGE");
     return;
   }
@@ -124,11 +124,33 @@ bool CommodityMarketSystem::validateRevokeArgs(vector<string> postArgs) {
 }
 
 void CommodityMarketSystem::checkOrder(string dealer, vector<string> args) {
-  cout << dealer << " CHECK" << endl;
+  if (validateRevokeArgs(args)) {
+    int orderID = stoi(args[0]);
+    if (!(dealer.compare(orders[orderID]->getDealer()) == 0)) {
+      printer.printError("UNAUTHORIZED");
+      return;
+    }
+    Order* order = orders[orderID];
+    if (order->getAmount() == 0) {
+      printer.printFilledStatus(orderID);
+    }
+    else {
+      printer.printOrderInfo(*order);
+    }
+  }
 }
 
 bool CommodityMarketSystem::validateCheckArgs(vector<string> postArgs) {
-  return false;
+  if (postArgs.size() != 1 || !isPureIntegerString(postArgs[0])) {
+    printer.printError("INVALID_MESSAGE");
+    return false;
+  }
+  int orderID = stoi(postArgs[0]);
+  if (orders.find(orderID) == orders.end()) {
+    printer.printError("UNKNOWN_ORDER");
+    return false;
+  }
+  return true;
 }
 
 void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
