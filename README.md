@@ -23,4 +23,4 @@ Launcher.cpp
   - Launches app
 
 TODO:
-- Create Printer class
+- Store order map on the heap
