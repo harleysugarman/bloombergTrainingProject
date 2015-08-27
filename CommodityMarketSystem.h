@@ -13,7 +13,7 @@ class CommodityMarketSystem {
   std::map<int, Order*> orders;
   Printer printer;
   
-  // Instruction execution
+  // Instruction validation and execution
   void postOrder(std::string dealer, std::vector<std::string> args);
   bool validatePostArgs(std::vector<std::string> postArgs);
 

@@ -11,7 +11,12 @@ CommodityMarketSystem::CommodityMarketSystem() {
   printer.printWelcomeMessage();
 }
 
-CommodityMarketSystem::~CommodityMarketSystem() { }
+CommodityMarketSystem::~CommodityMarketSystem() {
+  for (map<int, Order*>::iterator i = orders.begin(); i != orders.end(); ++i) {
+    delete (*i).second;
+    orders.erase(i);
+  }
+}
 
 void CommodityMarketSystem::processInput(string command) {
   if (command.length() > 255) {
@@ -57,10 +62,10 @@ void CommodityMarketSystem::postOrder(string dealer, vector<string> args) {
       string commodity = args[1];
       int amount = stoi(args[2]);
       double price = stod(args[3]);
-      Order order(++currentOrderNumber, dealer, commodity, 
-                  side, amount, price);
-      orders[currentOrderNumber] = &order;
-      printer.printPostConfirmation(order);
+      Order* order = new Order(++currentOrderNumber, dealer, commodity, 
+                              side, amount, price);
+      orders[currentOrderNumber] = order;
+      printer.printPostConfirmation(*order);
     }
 }
 
@@ -95,12 +100,11 @@ bool CommodityMarketSystem::validatePostArgs(vector<string> postArgs) {
 void CommodityMarketSystem::revokeOrder(string dealer, vector<string> args) {
   if (validateRevokeArgs(args)) {
     int orderID = stoi(args[0]);
-    // cout << orders[orderID]->getDealer();
-    // cout << " " << dealer << endl;
     if (!(dealer.compare(orders[orderID]->getDealer()) == 0)) {
       printer.printError("UNAUTHORIZED");
       return;
     }
+    // TODO: DELETE ORDER
     orders.erase(orderID);
     printer.printRevokedOrder(*orders[orderID]);
   }
