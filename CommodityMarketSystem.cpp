@@ -57,8 +57,9 @@ void CommodityMarketSystem::postOrder(string dealer, vector<string> args) {
       string commodity = args[1];
       int amount = stoi(args[2]);
       double price = stod(args[3]);
-      Order order(++currentOrderNumber, dealer, commodity, side, amount, price);
-      orders.push_back(order);
+      Order order(++currentOrderNumber, dealer, commodity, 
+                  side, amount, price);
+      orders[currentOrderNumber] = &order;
       printer.printPostConfirmation(order);
     }
 }
@@ -92,11 +93,24 @@ bool CommodityMarketSystem::validatePostArgs(vector<string> postArgs) {
 }
 
 void CommodityMarketSystem::revokeOrder(string dealer, vector<string> args) {
-  cout << dealer << " REVOKE" << endl;
+  if (validateRevokeArgs(args)) {
+    int orderID = stoi(args[0]);
+    // TODO: if dealer is correct, remove order from map, else invalid dealer
+    printer.printRevokedOrder(*orders[orderID]);
+  }
 }
 
 bool CommodityMarketSystem::validateRevokeArgs(vector<string> postArgs) {
-  return false;
+  if (postArgs.size() != 1 || !isPureIntegerString(postArgs[0])) {
+    printer.printError("INVALID_MESSAGE");
+    return false;
+  }
+  int orderID = stoi(postArgs[0]);
+  if (orders.find(orderID) == orders.end()) {
+    printer.printError("UNKNOWN_ORDER");
+    return false;
+  }
+  return true;
 }
 
 void CommodityMarketSystem::checkOrder(string dealer, vector<string> args) {

@@ -3,13 +3,14 @@
 
 #include "Printer.h"
 #include "Order.h"
+#include <map>
 #include <vector>
 #include <string>
 
 class CommodityMarketSystem {
   // Bookkeeping, terminal printer, and data
   int currentOrderNumber;
-  std::vector<Order> orders;
+  std::map<int, Order*> orders;
   Printer printer;
   
   // Instruction execution

@@ -14,10 +14,10 @@ void Printer::printWelcomeMessage() {
 }
 
 void Printer::printPostConfirmation(Order order) {
-	cout << order.getID() << " " << order.getDealer() << " ";
-	cout << order.getSide() << " " << order.getCommodity() << " ";
-	cout << order.getAmount() << " " << order.getPrice() << " ";
-	cout << "HAS BEEN POSTED" << endl;
+  cout << order.getID() << " " << order.getDealer() << " ";
+  cout << order.getSide() << " " << order.getCommodity() << " ";
+  cout << order.getAmount() << " " << order.getPrice() << " ";
+  cout << "HAS BEEN POSTED" << endl;
 }
 
 void Printer::printOrderInfo(Order order) {
@@ -29,7 +29,7 @@ void Printer::printTradeReport() {
 }
 
 void Printer::printRevokedOrder(Order order) {
-
+  cout << "REVOKE CALLED" << endl;
 }
 
 void Printer::printError(string errorText) {
