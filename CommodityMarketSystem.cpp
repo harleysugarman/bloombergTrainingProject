@@ -154,9 +154,9 @@ bool CommodityMarketSystem::validateCheckArgs(vector<string> postArgs) {
 }
 
 void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
-  if (args.size() == 0) {
-    for (map<int, Order*>::iterator i = orders.begin(); i != orders.end(); i++) {
-      Order* order = i->second;
+  if (validateListArgs(args)) {
+    vector<Order*> ordersToPrint = findOrdersToList(args);
+    for (Order* order : ordersToPrint) {
       if (order->getAmount() != 0) {
         printer.printOrderInfo(*order);
       }
@@ -165,7 +165,15 @@ void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
 }
 
 bool CommodityMarketSystem::validateListArgs(vector<string> postArgs) {
-  return false;
+  return true;
+}
+
+vector<Order*> CommodityMarketSystem::findOrdersToList(vector<string> args) {
+  vector<Order*> ordersToList;
+  for (auto &order : orders) {
+    ordersToList.push_back(order.second);
+  }
+  return ordersToList;
 }
 
 void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {

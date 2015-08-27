@@ -34,6 +34,7 @@ class CommodityMarketSystem {
 
   // Helper functions
   std::vector<std::string> createCommandArray(std::string command);
+  std::vector<Order*> findOrdersToList(std::vector<std::string> args);
   bool isPureIntegerString(std::string s);
   bool isPureDoubleString(std::string s);
   
