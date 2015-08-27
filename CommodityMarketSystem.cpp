@@ -1,6 +1,4 @@
 #include "Database.h"
-#include "Printer.h"
-#include "Order.h"
 #include "CommodityMarketSystem.h"
 #include <iostream>
 #include <sstream>
@@ -10,13 +8,14 @@ using namespace std;
 
 CommodityMarketSystem::CommodityMarketSystem() {
   currentOrderNumber = 0;
+  printer.printWelcomeMessage();
 }
 
 CommodityMarketSystem::~CommodityMarketSystem() { }
 
 void CommodityMarketSystem::processInput(string command) {
   if (command.length() > 255) {
-    printErrorMessage("INVALID_MESSAGE");
+    printer.printError("INVALID_MESSAGE");
     return;
   }
   vector<string> commandArray = createCommandArray(command);
@@ -26,7 +25,7 @@ void CommodityMarketSystem::processInput(string command) {
     vector<string> args(commandArray.begin()+2, commandArray.end());
     executeInstruction(dealer, instruction, args);
   }
-  else printErrorMessage("UNKNOWN_DEALER");
+  else printer.printError("UNKNOWN_DEALER");
 }
 
 void CommodityMarketSystem::executeInstruction(string dealer, 
@@ -48,7 +47,7 @@ void CommodityMarketSystem::executeInstruction(string dealer,
     aggressOrders(dealer, args);
   }
   else {
-    printErrorMessage("INVALID_MESSAGE");
+    printer.printError("INVALID_MESSAGE");
   }
 }
 
@@ -60,32 +59,32 @@ void CommodityMarketSystem::postOrder(string dealer, vector<string> args) {
       double price = stod(args[3]);
       Order order(++currentOrderNumber, dealer, commodity, side, amount, price);
       orders.push_back(order);
-      printOutputMessage();
+      printer.printPostConfirmation(order);
     }
 }
 
 bool CommodityMarketSystem::validatePostArgs(vector<string> postArgs) {
   // check correct number of arguments
   if (postArgs.size() != 4) {
-    printErrorMessage("INVALID_MESSAGE");
+    printer.printError("INVALID_MESSAGE");
     return false;
   }
   // check string arguments
   string side = postArgs[0];
   string commodity = postArgs[1];
   if (find(begin(Sides), end(Sides), side) == end(Sides)) {
-    printErrorMessage("INVALID_MESSAGE");
+    printer.printError("INVALID_MESSAGE");
     return false;
   }
   if (find(begin(Commodities), end(Commodities), commodity) == end(Commodities)) {
-    printErrorMessage("UNKNOWN_COMMODITY");
+    printer.printError("UNKNOWN_COMMODITY");
     return false;
   }
   // check numeric arguments
   string amountString = postArgs[2];
   string priceString = postArgs[3];
   if (!isPureIntegerString(amountString) || !isPureDoubleString(priceString)) {
-    printErrorMessage("INVALID_MESSAGE");
+    printer.printError("INVALID_MESSAGE");
     return false;    
   }
   // all arguments valid - return true
@@ -134,14 +133,6 @@ vector<string> CommodityMarketSystem::createCommandArray(string command) {
     commandArray.push_back(word);
   }
   return commandArray;
-}
-
-void CommodityMarketSystem::printErrorMessage(string errorMessage) {
-  cout << "ERROR: " << errorMessage << endl;
-}
-
-void CommodityMarketSystem::printOutputMessage() {
-
 }
 
 bool CommodityMarketSystem::isPureIntegerString(string s) {

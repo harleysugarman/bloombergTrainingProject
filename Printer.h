@@ -1,12 +1,19 @@
 #ifndef PRINTER_H
 #define PRINTER_H
 
+#include "Order.h"
 #include <string>
 
 class Printer {
-  
  public:
-  void printErrorMessage(std::string errorText);
+  Printer();
+  ~Printer();
+  void printWelcomeMessage();
+  void printPostConfirmation(Order order);
+  void printOrderInfo(Order order);
+  void printTradeReport();
+  void printRevokedOrder(Order order);
+  void printError(std::string errorText);
 };
 
 #endif // PRINTER_H

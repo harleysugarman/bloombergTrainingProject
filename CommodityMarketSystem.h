@@ -1,14 +1,16 @@
 #ifndef COMMODITYMARKETSYSTEM_H
 #define COMMODITYMARKETSYSTEM_H
 
+#include "Printer.h"
 #include "Order.h"
 #include <vector>
 #include <string>
 
 class CommodityMarketSystem {
-  // Bookkeeping and data
+  // Bookkeeping, terminal printer, and data
   int currentOrderNumber;
   std::vector<Order> orders;
+  Printer printer;
   
   // Instruction execution
   void postOrder(std::string dealer, std::vector<std::string> args);
@@ -31,8 +33,6 @@ class CommodityMarketSystem {
 
   // Helper functions
   std::vector<std::string> createCommandArray(std::string command);
-  void printErrorMessage(std::string errorMessage);
-  void printOutputMessage();
   bool isPureIntegerString(std::string s);
   bool isPureDoubleString(std::string s);
   
