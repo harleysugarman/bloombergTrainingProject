@@ -154,7 +154,14 @@ bool CommodityMarketSystem::validateCheckArgs(vector<string> postArgs) {
 }
 
 void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
-  cout << dealer << " LIST" << endl;
+  if (args.size() == 0) {
+    for (map<int, Order*>::iterator i = orders.begin(); i != orders.end(); i++) {
+      Order* order = i->second;
+      if (order->getAmount() != 0) {
+        printer.printOrderInfo(*order);
+      }
+    }
+  }
 }
 
 bool CommodityMarketSystem::validateListArgs(vector<string> postArgs) {
