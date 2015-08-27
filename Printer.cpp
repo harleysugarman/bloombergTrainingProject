@@ -14,7 +14,10 @@ void Printer::printWelcomeMessage() {
 }
 
 void Printer::printPostConfirmation(Order order) {
-	cout << "PRINT POST" << endl;
+	cout << order.getID() << " " << order.getDealer() << " ";
+	cout << order.getSide() << " " << order.getCommodity() << " ";
+	cout << order.getAmount() << " " << order.getPrice() << " ";
+	cout << "HAS BEEN POSTED" << endl;
 }
 
 void Printer::printOrderInfo(Order order) {
