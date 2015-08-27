@@ -95,7 +95,13 @@ bool CommodityMarketSystem::validatePostArgs(vector<string> postArgs) {
 void CommodityMarketSystem::revokeOrder(string dealer, vector<string> args) {
   if (validateRevokeArgs(args)) {
     int orderID = stoi(args[0]);
-    // TODO: if dealer is correct, remove order from map, else invalid dealer
+    // cout << orders[orderID]->getDealer();
+    // cout << " " << dealer << endl;
+    if (!(dealer.compare(orders[orderID]->getDealer()) == 0)) {
+      printer.printError("UNAUTHORIZED");
+      return;
+    }
+    orders.erase(orderID);
     printer.printRevokedOrder(*orders[orderID]);
   }
 }
