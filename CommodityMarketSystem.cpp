@@ -12,10 +12,10 @@ CommodityMarketSystem::CommodityMarketSystem() {
 }
 
 CommodityMarketSystem::~CommodityMarketSystem() {
-  for (map<int, Order*>::iterator i = orders.begin(); i != orders.end(); ++i) {
-    delete (*i).second;
-    orders.erase(i);
+  for (map<int, Order*>::iterator i = orders.begin(); i != orders.end(); i++) {
+    delete i->second;
   }
+  orders.clear();
 }
 
 void CommodityMarketSystem::processInput(string command) {
@@ -104,9 +104,9 @@ void CommodityMarketSystem::revokeOrder(string dealer, vector<string> args) {
       printer.printError("UNAUTHORIZED");
       return;
     }
-    // TODO: DELETE ORDER
+    delete orders[orderID];
     orders.erase(orderID);
-    printer.printRevokedOrder(*orders[orderID]);
+    printer.printRevokedOrder(orderID);
   }
 }
 

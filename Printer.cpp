@@ -28,8 +28,8 @@ void Printer::printTradeReport() {
 
 }
 
-void Printer::printRevokedOrder(Order order) {
-  cout << "REVOKE CALLED" << endl;
+void Printer::printRevokedOrder(int orderID) {
+  cout << orderID << " HAS BEEN REVOKED" << endl;
 }
 
 void Printer::printError(string errorText) {

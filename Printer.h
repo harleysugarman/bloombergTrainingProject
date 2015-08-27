@@ -12,7 +12,7 @@ class Printer {
   void printPostConfirmation(Order order);
   void printOrderInfo(Order order);
   void printTradeReport();
-  void printRevokedOrder(Order order);
+  void printRevokedOrder(int orderID);
   void printError(std::string errorText);
 };
 
