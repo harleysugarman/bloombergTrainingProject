@@ -1,5 +1,4 @@
 #include "order.h"
-#include <string>
 using namespace std;
 
 Order::Order(int idParam, string dealerParam, string commodityParam,

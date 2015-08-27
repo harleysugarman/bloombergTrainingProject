@@ -2,25 +2,24 @@
 #define ORDER_H
 
 #include <string>
-using namespace std;
 
 class Order {
   int id;
-  string dealer;
-  string commodity;
-  string side;
+  std::string dealer;
+  std::string commodity;
+  std::string side;
   int amount;
   double price;
  public:
-  Order(int idParam, string dealerParam, string commodityParam,
-        string sideParam, int amountParam, double priceParam);
+  Order(int idParam, std::string dealerParam, std::string commodityParam,
+        std::string sideParam, int amountParam, double priceParam);
   ~Order();
   void updateAmount(int newAmount);
   // Getters
   int getID();
-  string getDealer();
-  string getCommodity();
-  string getSide();
+  std::string getDealer();
+  std::string getCommodity();
+  std::string getSide();
   int getAmount();
   double getPrice();
 };

@@ -1,8 +1,7 @@
 #include "Database.h"
+#include "Printer.h"
 #include "Order.h"
 #include "CommodityMarketSystem.h"
-#include <vector>
-#include <string>
 #include <iostream>
 #include <sstream>
 #include <algorithm>

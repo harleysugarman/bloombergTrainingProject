@@ -4,43 +4,42 @@
 #include "Order.h"
 #include <vector>
 #include <string>
-using namespace std;
 
 class CommodityMarketSystem {
   // Bookkeeping and data
   int currentOrderNumber;
-  vector<Order> orders;
+  std::vector<Order> orders;
   
   // Instruction execution
-  void postOrder(string dealer, vector<string> args);
-  bool validatePostArgs(vector<string> postArgs);
+  void postOrder(std::string dealer, std::vector<std::string> args);
+  bool validatePostArgs(std::vector<std::string> postArgs);
 
-  void revokeOrder(string dealer, vector<string> args);
-  bool validateRevokeArgs(vector<string> postArgs);
+  void revokeOrder(std::string dealer, std::vector<std::string> args);
+  bool validateRevokeArgs(std::vector<std::string> postArgs);
 
-  void checkOrder(string dealer, vector<string> args);
-  bool validateCheckArgs(vector<string> postArgs);
+  void checkOrder(std::string dealer, std::vector<std::string> args);
+  bool validateCheckArgs(std::vector<std::string> postArgs);
 
-  void listOrders(string dealer, vector<string> args);
-  bool validateListArgs(vector<string> postArgs);
+  void listOrders(std::string dealer, std::vector<std::string> args);
+  bool validateListArgs(std::vector<std::string> postArgs);
 
-  void aggressOrders(string dealer, vector<string> args);
-  bool validateAggressArgs(vector<string> postArgs);
+  void aggressOrders(std::string dealer, std::vector<std::string> args);
+  bool validateAggressArgs(std::vector<std::string> postArgs);
 
-  void executeInstruction(string dealer, string instruction, 
-                          vector<string> args);
+  void executeInstruction(std::string dealer, std::string instruction, 
+                          std::vector<std::string> args);
 
   // Helper functions
-  vector<string> createCommandArray(string command);
-  void printErrorMessage(string errorMessage);
+  std::vector<std::string> createCommandArray(std::string command);
+  void printErrorMessage(std::string errorMessage);
   void printOutputMessage();
-  bool isPureIntegerString(string s);
-  bool isPureDoubleString(string s);
+  bool isPureIntegerString(std::string s);
+  bool isPureDoubleString(std::string s);
   
  public:
   CommodityMarketSystem();
   ~CommodityMarketSystem();
-  void processInput(string command);
+  void processInput(std::string command);
 };
 
 #endif // COMMODITYMARKETSYSTEM_H
