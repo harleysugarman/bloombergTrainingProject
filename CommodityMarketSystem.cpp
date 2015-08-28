@@ -173,6 +173,24 @@ void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
 }
 
 bool CommodityMarketSystem::validateListArgs(vector<string> postArgs) {
+  if (postArgs.size() > 2){
+    printer.printError("INVALID_MESSAGE");
+    return false;
+  }
+  if (postArgs.size() >= 1) {
+    string commodity = postArgs[0];
+    if (find(begin(Commodities), end(Commodities), commodity) == end(Commodities)) {
+      printer.printError("UNKNOWN_COMMODITY");
+      return false;
+    }
+  }
+  if (postArgs.size() == 2) {
+    string dealer = postArgs[1];
+    if (find(begin(DealerIDs), end(DealerIDs), dealer) == end(DealerIDs)) {
+      printer.printError("UNKNOWN_DEALER");
+      return false;
+    }
+  }
   return true;
 }
 
