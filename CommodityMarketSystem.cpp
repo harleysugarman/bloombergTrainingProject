@@ -124,7 +124,7 @@ bool CommodityMarketSystem::validateRevokeArgs(vector<string> postArgs) {
 }
 
 void CommodityMarketSystem::checkOrder(string dealer, vector<string> args) {
-  if (validateRevokeArgs(args)) {
+  if (validateCheckArgs(args)) {
     int orderID = stoi(args[0]);
     if (!(dealer.compare(orders[orderID]->getDealer()) == 0)) {
       printer.printError("UNAUTHORIZED");
@@ -220,13 +220,39 @@ set<Order*> CommodityMarketSystem::filterOrders(string commodityFilter,
 }
 
 void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {
-  cout << dealer << " AGGRESS" << endl;
-  // vector<int> order_ids;
-  // vector<int> order_amounts;
+  if (validateAggressArgs(args)) {
+    cout << "VALID AGGRESS" << endl;
+    // vector<int> order_ids;
+    // vector<int> order_amounts;
+  }
 }
 
 bool CommodityMarketSystem::validateAggressArgs(vector<string> postArgs) {
-  return false;
+  if (postArgs.size() == 0 || postArgs.size() % 2 != 0) {
+    printer.printError("INVALID_MESSAGE");
+    return false;
+  }
+  set<int> usedOrders;
+  for (int i = 0; i < postArgs.size(); i++) {
+    // check integer values
+    if (!isPureIntegerString(postArgs[i])) {
+      printer.printError("INVALID_MESSAGE");
+      return false;      
+    }
+    // check order IDs
+    if (i % 2 == 0) {
+      if (orders.find(stoi(postArgs[i])) == orders.end()) {
+        printer.printError("UNKNOWN_ORDER");
+        return false;
+      }
+      if (usedOrders.find(stoi(postArgs[i])) != usedOrders.end()) {
+        printer.printError("INVALID_MESSAGE");
+        return false;
+      }
+      usedOrders.insert(stoi(postArgs[i]));
+    }
+  }
+  return true;
 }
 
 vector<string> CommodityMarketSystem::createCommandArray(string command) {
