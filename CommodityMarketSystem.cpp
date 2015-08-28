@@ -155,8 +155,14 @@ bool CommodityMarketSystem::validateCheckArgs(vector<string> postArgs) {
 
 void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
   if (validateListArgs(args)) {
-    string commodityFilter = "SILV";
-    string dealerFilter = "MS";
+    string commodityFilter = "";
+    string dealerFilter = "";
+    if (args.size() >= 1) {
+      commodityFilter = args[0];
+    }
+    if (args.size() == 2) {
+      dealerFilter = args[1];
+    }
     set<Order*> ordersToPrint = filterOrders(commodityFilter, dealerFilter);
     for (Order* order : ordersToPrint) {
       if (order->getAmount() != 0) {
@@ -174,17 +180,11 @@ set<Order*> CommodityMarketSystem::filterOrders(string commodityFilter,
                                                 string dealerFilter) {
   set<Order*> ordersToList;
   for (auto &order : orders) {
-    // neither filter set
+    // no filters set
     if (commodityFilter.empty() && dealerFilter.empty()) {
       ordersToList.insert(order.second);
     }
-    // only dealer filter set
-    else if (commodityFilter.empty()) {
-      if (dealerFilter.compare(order.second->getDealer()) == 0) {
-        ordersToList.insert(order.second);
-      }
-    }
-    // only commodity filter set
+    // commodity filter set
     else if (dealerFilter.empty()) {
       if (commodityFilter.compare(order.second->getCommodity()) == 0) {
         ordersToList.insert(order.second);
