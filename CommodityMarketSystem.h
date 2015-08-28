@@ -38,6 +38,11 @@ class CommodityMarketSystem {
   std::vector<std::string> createCommandArray(std::string command);
   std::set<Order*> filterOrders(std::string commodityFilter, 
                                 std::string dealerFilter);
+  bool isValidCommodity(std::string commodity);
+  bool isValidSide(std::string side);
+  bool isValidDealer(std::string dealerID);
+  bool isValidOrder(int orderID);
+  bool isAuthorized(std::string requestingDealer, Order* order);
   bool isPureIntegerString(std::string s);
   bool isPureDoubleString(std::string s);
   

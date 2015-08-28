@@ -25,7 +25,7 @@ void CommodityMarketSystem::processInput(string command) {
   }
   vector<string> commandArray = createCommandArray(command);
   string dealer = commandArray[0];
-  if (find(begin(DealerIDs), end(DealerIDs), dealer) != end(DealerIDs)) {
+  if (isValidDealer(dealer)) {
     string instruction = commandArray[1];
     vector<string> args(commandArray.begin()+2, commandArray.end());
     executeInstruction(dealer, instruction, args);
@@ -78,11 +78,11 @@ bool CommodityMarketSystem::validatePostArgs(vector<string> postArgs) {
   // check string arguments
   string side = postArgs[0];
   string commodity = postArgs[1];
-  if (find(begin(Sides), end(Sides), side) == end(Sides)) {
+  if (!isValidSide(side)) {
     printer.printError("INVALID_MESSAGE");
     return false;
   }
-  if (find(begin(Commodities), end(Commodities), commodity) == end(Commodities)) {
+  if (!isValidCommodity(commodity)) {
     printer.printError("UNKNOWN_COMMODITY");
     return false;
   }
@@ -100,7 +100,7 @@ bool CommodityMarketSystem::validatePostArgs(vector<string> postArgs) {
 void CommodityMarketSystem::revokeOrder(string dealer, vector<string> args) {
   if (validateRevokeArgs(args)) {
     int orderID = stoi(args[0]);
-    if (!(dealer.compare(orders[orderID]->getDealer()) == 0)) {
+    if (!isAuthorized(dealer, orders[orderID])) {
       printer.printError("UNAUTHORIZED");
       return;
     }
@@ -116,7 +116,7 @@ bool CommodityMarketSystem::validateRevokeArgs(vector<string> postArgs) {
     return false;
   }
   int orderID = stoi(postArgs[0]);
-  if (orders.find(orderID) == orders.end()) {
+  if (!isValidOrder(orderID)) {
     printer.printError("UNKNOWN_ORDER");
     return false;
   }
@@ -126,7 +126,7 @@ bool CommodityMarketSystem::validateRevokeArgs(vector<string> postArgs) {
 void CommodityMarketSystem::checkOrder(string dealer, vector<string> args) {
   if (validateCheckArgs(args)) {
     int orderID = stoi(args[0]);
-    if (!(dealer.compare(orders[orderID]->getDealer()) == 0)) {
+    if (!isAuthorized(dealer, orders[orderID])) {
       printer.printError("UNAUTHORIZED");
       return;
     }
@@ -146,7 +146,7 @@ bool CommodityMarketSystem::validateCheckArgs(vector<string> postArgs) {
     return false;
   }
   int orderID = stoi(postArgs[0]);
-  if (orders.find(orderID) == orders.end()) {
+  if (!isValidOrder(orderID)) {
     printer.printError("UNKNOWN_ORDER");
     return false;
   }
@@ -179,14 +179,14 @@ bool CommodityMarketSystem::validateListArgs(vector<string> postArgs) {
   }
   if (postArgs.size() >= 1) {
     string commodity = postArgs[0];
-    if (find(begin(Commodities), end(Commodities), commodity) == end(Commodities)) {
+    if (!isValidCommodity(commodity)) {
       printer.printError("UNKNOWN_COMMODITY");
       return false;
     }
   }
   if (postArgs.size() == 2) {
     string dealer = postArgs[1];
-    if (find(begin(DealerIDs), end(DealerIDs), dealer) == end(DealerIDs)) {
+    if (!isValidDealer(dealer)) {
       printer.printError("UNKNOWN_DEALER");
       return false;
     }
@@ -238,6 +238,8 @@ void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {
 }
 
 void CommodityMarketSystem::aggressOrder(string dealer, int orderID, int amount) {
+  Order *order = orders[orderID];
+  cout << "AGGRESS: " << dealer << endl;
   // if can aggress order
   //   printer.printTradeReport
   // else
@@ -258,10 +260,11 @@ bool CommodityMarketSystem::validateAggressArgs(vector<string> postArgs) {
     }
     // check order IDs
     if (i % 2 == 0) {
-      if (orders.find(stoi(postArgs[i])) == orders.end()) {
+      if (!isValidOrder(stoi(postArgs[i]))) {
         printer.printError("UNKNOWN_ORDER");
         return false;
       }
+      // cannot aggress on the same order twice in one command
       if (usedOrders.find(stoi(postArgs[i])) != usedOrders.end()) {
         printer.printError("INVALID_MESSAGE");
         return false;
@@ -280,6 +283,26 @@ vector<string> CommodityMarketSystem::createCommandArray(string command) {
     commandArray.push_back(word);
   }
   return commandArray;
+}
+
+bool CommodityMarketSystem::isValidCommodity(string commodity) {
+  return !(find(begin(Commodities), end(Commodities), commodity) == end(Commodities));
+}
+
+bool CommodityMarketSystem::isValidSide(string side) {
+  return !(find(begin(Sides), end(Sides), side) == end(Sides));
+}
+
+bool CommodityMarketSystem::isValidDealer(string dealerID) {
+  return !(find(begin(DealerIDs), end(DealerIDs), dealerID) == end(DealerIDs));
+}
+
+bool CommodityMarketSystem::isValidOrder(int orderID) {
+  return !(orders.find(orderID) == orders.end());
+}
+
+bool CommodityMarketSystem::isAuthorized(string requestingDealer, Order* order) {
+  return (requestingDealer.compare(order->getDealer()) == 0);
 }
 
 bool CommodityMarketSystem::isPureIntegerString(string s) {
