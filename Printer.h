@@ -11,7 +11,7 @@ class Printer {
   void printWelcomeMessage();
   void printPostConfirmation(Order order);
   void printOrderInfo(Order order);
-  void printTradeReport();
+  void printTradeReport(std::string boughtOrSold, int amount, Order order);
   void printRevokedOrder(int orderID);
   void printFilledStatus(int orderID);
   void printError(std::string errorText);

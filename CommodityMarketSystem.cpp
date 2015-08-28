@@ -62,7 +62,7 @@ void CommodityMarketSystem::postOrder(string dealer, vector<string> args) {
       string commodity = args[1];
       int amount = stoi(args[2]);
       double price = stod(args[3]);
-      Order* order = new Order(++currentOrderNumber, dealer, commodity, 
+      Order *order = new Order(++currentOrderNumber, dealer, commodity, 
                               side, amount, price);
       orders[currentOrderNumber] = order;
       printer.printPostConfirmation(*order);
@@ -130,7 +130,7 @@ void CommodityMarketSystem::checkOrder(string dealer, vector<string> args) {
       printer.printError("UNAUTHORIZED");
       return;
     }
-    Order* order = orders[orderID];
+    Order *order = orders[orderID];
     if (order->getAmount() == 0) {
       printer.printFilledStatus(orderID);
     }
@@ -164,7 +164,7 @@ void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
       dealerFilter = args[1];
     }
     set<Order*> ordersToPrint = filterOrders(commodityFilter, dealerFilter);
-    for (Order* order : ordersToPrint) {
+    for (Order *order : ordersToPrint) {
       if (order->getAmount() != 0) {
         printer.printOrderInfo(*order);
       }
@@ -227,7 +227,7 @@ void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {
       if (i % 2 == 0) {
         ordersToAggress.push_back(stoi(args[i]));
       }
-      if (1 % 2 == 1) {
+      if (i % 2 == 1) {
         amountsToAggress.push_back(stoi(args[i]));
       }
     }
@@ -239,11 +239,16 @@ void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {
 
 void CommodityMarketSystem::aggressOrder(string dealer, int orderID, int amount) {
   Order *order = orders[orderID];
-  cout << "AGGRESS: " << dealer << endl;
-  // if can aggress order
-  //   printer.printTradeReport
-  // else
-  //   printer.printError("INVALID_MESSAGE");
+  if (order->getAmount() <= amount) {
+    int newBalance = order->getAmount() - amount;
+    order->updateAmount(newBalance);
+    bool aggressorIsSelling = (order->getSide().compare("BUY") == 0);
+    string boughtOrSold = (aggressorIsSelling ? "SOLD" : "BUY");
+    printer.printTradeReport(boughtOrSold, amount, *order);
+  }
+  else {
+    printer.printError("INVALID_MESSAGE");
+  }
 }
 
 bool CommodityMarketSystem::validateAggressArgs(vector<string> postArgs) {
