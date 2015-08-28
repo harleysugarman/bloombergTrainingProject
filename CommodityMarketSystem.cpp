@@ -155,7 +155,9 @@ bool CommodityMarketSystem::validateCheckArgs(vector<string> postArgs) {
 
 void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
   if (validateListArgs(args)) {
-    vector<Order*> ordersToPrint = findOrdersToList(args);
+    string commodityFilter = "SILV";
+    string dealerFilter = "MS";
+    set<Order*> ordersToPrint = filterOrders(commodityFilter, dealerFilter);
     for (Order* order : ordersToPrint) {
       if (order->getAmount() != 0) {
         printer.printOrderInfo(*order);
@@ -168,10 +170,33 @@ bool CommodityMarketSystem::validateListArgs(vector<string> postArgs) {
   return true;
 }
 
-vector<Order*> CommodityMarketSystem::findOrdersToList(vector<string> args) {
-  vector<Order*> ordersToList;
+set<Order*> CommodityMarketSystem::filterOrders(string commodityFilter,
+                                                string dealerFilter) {
+  set<Order*> ordersToList;
   for (auto &order : orders) {
-    ordersToList.push_back(order.second);
+    // neither filter set
+    if (commodityFilter.empty() && dealerFilter.empty()) {
+      ordersToList.insert(order.second);
+    }
+    // only dealer filter set
+    else if (commodityFilter.empty()) {
+      if (dealerFilter.compare(order.second->getDealer()) == 0) {
+        ordersToList.insert(order.second);
+      }
+    }
+    // only commodity filter set
+    else if (dealerFilter.empty()) {
+      if (commodityFilter.compare(order.second->getCommodity()) == 0) {
+        ordersToList.insert(order.second);
+      }
+    }
+    // both filters set
+    else {
+      if (commodityFilter.compare(order.second->getCommodity()) == 0 &&
+          dealerFilter.compare(order.second->getDealer()) == 0) {
+        ordersToList.insert(order.second);
+      }
+    }
   }
   return ordersToList;
 }

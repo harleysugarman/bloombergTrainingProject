@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <set>
 
 class CommodityMarketSystem {
   // Bookkeeping, terminal printer, and data
@@ -34,7 +35,8 @@ class CommodityMarketSystem {
 
   // Helper functions
   std::vector<std::string> createCommandArray(std::string command);
-  std::vector<Order*> findOrdersToList(std::vector<std::string> args);
+  std::set<Order*> filterOrders(std::string commodityFilter, 
+                                std::string dealerFilter);
   bool isPureIntegerString(std::string s);
   bool isPureDoubleString(std::string s);
   
