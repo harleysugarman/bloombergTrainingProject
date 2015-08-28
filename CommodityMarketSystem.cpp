@@ -239,11 +239,11 @@ void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {
 
 void CommodityMarketSystem::aggressOrder(string dealer, int orderID, int amount) {
   Order *order = orders[orderID];
-  if (order->getAmount() <= amount) {
+  if (order->getAmount() >= amount) {
     int newBalance = order->getAmount() - amount;
     order->updateAmount(newBalance);
     bool aggressorIsSelling = (order->getSide().compare("BUY") == 0);
-    string boughtOrSold = (aggressorIsSelling ? "SOLD" : "BUY");
+    string boughtOrSold = (aggressorIsSelling ? "SOLD" : "BOUGHT");
     printer.printTradeReport(boughtOrSold, amount, *order);
   }
   else {

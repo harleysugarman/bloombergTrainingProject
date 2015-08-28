@@ -27,8 +27,8 @@ void Printer::printOrderInfo(Order order) {
 }
 
 void Printer::printTradeReport(string boughtOrSold, int amount, Order order) {
-  cout << boughtOrSold << " " << amount << order.getCommodity() << " @ ";
-  cout << order.getPrice() << " FROM " << order.getDealer() << endl;
+  cout << boughtOrSold << " " << amount << " " << order.getCommodity();
+  cout << " @ " << order.getPrice() << " FROM " << order.getDealer() << endl;
 }
 
 void Printer::printRevokedOrder(int orderID) {
