@@ -28,6 +28,7 @@ class CommodityMarketSystem {
   bool validateListArgs(std::vector<std::string> postArgs);
 
   void aggressOrders(std::string dealer, std::vector<std::string> args);
+  void aggressOrder(std::string dealer, int orderID, int amount);
   bool validateAggressArgs(std::vector<std::string> postArgs);
 
   void executeInstruction(std::string dealer, std::string instruction, 

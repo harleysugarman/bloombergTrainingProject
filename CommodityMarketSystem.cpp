@@ -221,10 +221,27 @@ set<Order*> CommodityMarketSystem::filterOrders(string commodityFilter,
 
 void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {
   if (validateAggressArgs(args)) {
-    cout << "VALID AGGRESS" << endl;
-    // vector<int> order_ids;
-    // vector<int> order_amounts;
+    vector<int> ordersToAggress;
+    vector<int> amountsToAggress;
+    for (int i = 0; i < args.size(); i++) {
+      if (i % 2 == 0) {
+        ordersToAggress.push_back(stoi(args[i]));
+      }
+      if (1 % 2 == 1) {
+        amountsToAggress.push_back(stoi(args[i]));
+      }
+    }
+    for (int i = 0; i < ordersToAggress.size(); i++) {
+      aggressOrder(dealer, ordersToAggress[i], amountsToAggress[i]);
+    }
   }
+}
+
+void CommodityMarketSystem::aggressOrder(string dealer, int orderID, int amount) {
+  // if can aggress order
+  //   printer.printTradeReport
+  // else
+  //   printer.printError("INVALID_MESSAGE");
 }
 
 bool CommodityMarketSystem::validateAggressArgs(vector<string> postArgs) {
