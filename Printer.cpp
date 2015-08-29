@@ -40,5 +40,5 @@ void Printer::printFilledStatus(int orderID) {
 }
 
 void Printer::printError(string errorText) {
-	cout << "ERROR: " << errorText << endl;
+  cout << "ERROR: " << errorText << endl;
 }
