@@ -1,26 +1,16 @@
-File Structure:
+# Commodity Market System
 
-Order.h/.cpp
-class with:
-  - id
-  - dealer
-  - commodity
-  - sell/buy
-  - number of contracts
-  - price per contract
+## Basic Information
+- Name: Harley Sugarman
+- Project Title: Commodity Market System
+- Parts Implemented: base
 
-CommodityMarketSystem.h/.cpp
-class that:
-  - creates orders
-  - checks if orders can be filled
-  -
+## Instructions
+- Unzip archive folder into its own directory
+- Build executable using `make`
+- Make sure the 'cms' executable file has been created
+- Run base project using `./cms base`
 
-Database.h
-  - Contains enumerated values for all types
+## Implementation Overview
 
-Launcher.cpp
-  - Creates CMS
-  - Launches app
-
-TODO:
-- Store order map on the heap
+(Developed on a Macbook Pro using C++11)
