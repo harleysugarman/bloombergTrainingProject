@@ -18,6 +18,10 @@ CommodityMarketSystem::~CommodityMarketSystem() {
   orders.clear();
 }
 
+/*
+ * Process a string input by the user into an instruction, then execute 
+ * instruction using the functions below.
+ */
 void CommodityMarketSystem::processInput(string command) {
   vector<string> commandArray = createCommandArray(command);
   if (commandArray.size() < 2) {
@@ -33,6 +37,10 @@ void CommodityMarketSystem::processInput(string command) {
   else printer.printError("UNKNOWN_DEALER");
 }
 
+/*
+ * Checks to make sure instruction is valid, then calls the relevant
+ * command.
+ */
 void CommodityMarketSystem::executeInstruction(string dealer, 
                                                string instruction,
                                                vector<string> args) {
@@ -56,6 +64,13 @@ void CommodityMarketSystem::executeInstruction(string dealer,
   }
 }
 
+/****************************** POST ******************************/
+
+/*
+ * Post an order to the system. Create a new Order object using the given
+ * arguments, then add the order to the CMS orders map. Increment 
+ * currentOrderNumber.
+ */
 void CommodityMarketSystem::postOrder(string dealer, vector<string> args) {
     if (validatePostArgs(args)) {
       string side = args[0];
@@ -97,6 +112,14 @@ bool CommodityMarketSystem::validatePostArgs(vector<string> postArgs) {
   return true;
 }
 
+/****************************** END POST ******************************/
+
+/****************************** REVOKE ******************************/
+
+/*
+ * Remove an order from the system. If the orderID is valid and the dealer 
+ * issuing the command is authorized, delete the entry from the orders map.
+ */
 void CommodityMarketSystem::revokeOrder(string dealer, vector<string> args) {
   if (validateRevokeArgs(args)) {
     int orderID = stoi(args[0]);
@@ -123,6 +146,16 @@ bool CommodityMarketSystem::validateRevokeArgs(vector<string> postArgs) {
   return true;
 }
 
+/****************************** END REVOKE ******************************/
+
+/****************************** CHECK ******************************/
+
+/*
+ * Check on the status of an order. If the dealer is authorized and the user is 
+ * valid, print either:
+ * - the order information if the order has not yet been filled
+ * - a filled message otherwise
+ */
 void CommodityMarketSystem::checkOrder(string dealer, vector<string> args) {
   if (validateCheckArgs(args)) {
     int orderID = stoi(args[0]);
@@ -153,6 +186,16 @@ bool CommodityMarketSystem::validateCheckArgs(vector<string> postArgs) {
   return true;
 }
 
+/****************************** END CHECK ******************************/
+
+/****************************** LIST ******************************/
+
+/*
+ * List all orders that satisfy the given filters. The user may provide filters 
+ * for the dealer and the commodity, and this function prints an order 
+ * information message for every unfilled order that satisfies the given 
+ * constraints.
+ */
 void CommodityMarketSystem::listOrders(string dealer, vector<string> args) {
   if (validateListArgs(args)) {
     string commodityFilter = "";
@@ -219,6 +262,16 @@ set<Order*> CommodityMarketSystem::filterOrders(string commodityFilter,
   return ordersToList;
 }
 
+/****************************** END LIST ******************************/
+
+/****************************** AGGRESS ******************************/
+
+/*
+ * Aggress on a given order. If the order number is valid, and the number of
+ * units supplied is less than or equal to the number of units remaining in 
+ * the order, make the transaction and update the orders map accordingly. Then 
+ * print a success message to the terminal.
+ */
 void CommodityMarketSystem::aggressOrders(string dealer, vector<string> args) {
   if (validateAggressArgs(args)) {
     vector<int> ordersToAggress;
@@ -280,6 +333,11 @@ bool CommodityMarketSystem::validateAggressArgs(vector<string> postArgs) {
   return true;
 }
 
+/****************************** END AGGRESS ******************************/
+
+/*
+ *
+ */
 vector<string> CommodityMarketSystem::createCommandArray(string command) {
   vector<string> commandArray;
   stringstream ss(command);
@@ -290,30 +348,39 @@ vector<string> CommodityMarketSystem::createCommandArray(string command) {
   return commandArray;
 }
 
+// Helper: checks if a given commodity is valid
 bool CommodityMarketSystem::isValidCommodity(string commodity) {
   return !(find(begin(Commodities), end(Commodities), commodity) == end(Commodities));
 }
 
+// Helper: checks if a given side is valid
 bool CommodityMarketSystem::isValidSide(string side) {
   return !(find(begin(Sides), end(Sides), side) == end(Sides));
 }
 
+// Helper: checks if a given dealer is valid
 bool CommodityMarketSystem::isValidDealer(string dealerID) {
   return !(find(begin(DealerIDs), end(DealerIDs), dealerID) == end(DealerIDs));
 }
 
+// Helper: checks if a given order ID is valid
 bool CommodityMarketSystem::isValidOrder(int orderID) {
   return !(orders.find(orderID) == orders.end());
 }
 
+// Helper: checks if a given dealer is authorized on a given order
 bool CommodityMarketSystem::isAuthorized(string requestingDealer, Order* order) {
   return (requestingDealer.compare(order->getDealer()) == 0);
 }
 
+// Helper: checks if a string is purely an integer. 
+// Example: "123" is valid, "123.1", "123a" are not
 bool CommodityMarketSystem::isPureIntegerString(string s) {
     return !s.empty() && s.find_first_not_of("0123456789") == string::npos;
 }
 
+// Helper: checks if a string is purely an integer of double.
+// Example "123.1" is valid, "123.1.1", "123.1a" are not
 bool CommodityMarketSystem::isPureDoubleString(string s) {
     char* endptr = 0;
     strtod(s.c_str(), &endptr);

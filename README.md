@@ -36,7 +36,8 @@ sides (BUY/SELL).
 
 ### Launcher.cpp
 This file provides the code used to create and launch a CMS instance and 
-process the input.
+process the input. Input is case- and format-sensitive (see original assignment 
+for details).
 
 ## Known issues/other notes
 Developed on a Macbook Pro using C++11

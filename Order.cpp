@@ -13,10 +13,12 @@ Order::Order(int idParam, string dealerParam, string commodityParam,
 
 Order::~Order() { }
 
+// Setter for amount
 void Order::updateAmount(int newAmount) {
   amount = newAmount;
 }
 
+// Getters
 int Order::getID() {
   return id;
 }

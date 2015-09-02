@@ -6,6 +6,7 @@ using namespace std;
 
 void runCMS();
 
+// Main function
 int main(int argc, char* argv[]) {
   if (argc == 2 && strcmp(argv[1], "base") == 0) {
     runCMS();
@@ -23,6 +24,10 @@ int main(int argc, char* argv[]) {
   return 3;
 }
 
+/*
+ * Runs the CMS, asking for input until an exit command is detected.
+ * Input is case- and format-sensitive (see original assignment for details).
+ */
 void runCMS() {
   CommodityMarketSystem cms;
   string command = "";
