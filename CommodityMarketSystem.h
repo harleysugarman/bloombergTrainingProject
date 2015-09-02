@@ -8,6 +8,11 @@
 #include <string>
 #include <set>
 
+/**
+ * CLASS: COMMODITY MARKET SYSTEM
+ * This class is in charge of processing and storing order information.
+ * Detailed notes on each command can be found in the initial assignment.
+ */
 class CommodityMarketSystem {
   // Bookkeeping, terminal printer, and data
   int currentOrderNumber;

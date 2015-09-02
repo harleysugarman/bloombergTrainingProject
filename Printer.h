@@ -4,6 +4,11 @@
 #include "Order.h"
 #include <string>
 
+/**
+ * CLASS: PRINTER
+ * This class provides methods used to print output from the CMS to the 
+ * terminal. It is provided as an object to the CMS class.
+ */
 class Printer {
  public:
   Printer();

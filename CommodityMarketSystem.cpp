@@ -19,11 +19,11 @@ CommodityMarketSystem::~CommodityMarketSystem() {
 }
 
 void CommodityMarketSystem::processInput(string command) {
-  if (command.length() == 0 || command.length() > 255) {
+  vector<string> commandArray = createCommandArray(command);
+  if (commandArray.size() < 2) {
     printer.printError("INVALID_MESSAGE");
     return;
   }
-  vector<string> commandArray = createCommandArray(command);
   string dealer = commandArray[0];
   if (isValidDealer(dealer)) {
     string instruction = commandArray[1];

@@ -3,6 +3,11 @@
 
 #include <string>
 
+/**
+ * CLASS: ORDER
+ * This class stores information about a single order and provides getters/
+ * setters for any relevant information.
+ */
 class Order {
   int id;
   std::string dealer;

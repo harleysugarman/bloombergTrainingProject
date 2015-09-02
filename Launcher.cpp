@@ -4,7 +4,6 @@
 #include <iostream>
 using namespace std;
 
-// function declarations
 void runCMS();
 
 int main(int argc, char* argv[]) {
@@ -26,8 +25,8 @@ int main(int argc, char* argv[]) {
 
 void runCMS() {
   CommodityMarketSystem cms;
+  string command = "";
   while (true) {
-    string command;
     cout << "> ";
     getline(cin, command);
     if (command.compare("QUIT") == 0) break;
