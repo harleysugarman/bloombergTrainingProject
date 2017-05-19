@@ -3,7 +3,6 @@
 ## Basic Information
 - Name: Harley Sugarman
 - Project Title: Commodity Market System
-- Parts Implemented: base
 
 ## Instructions
 - Unzip archive folder into its own directory
